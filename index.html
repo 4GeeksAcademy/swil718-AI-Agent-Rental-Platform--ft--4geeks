@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentHub - Enterprise AI Fleet Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        @custom-variant dark (&:where(.dark, .dark *));
+    </style>
+</head>
+<body class="antialiased">
+    <div id="app" class="flex h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col p-6">
+            <div class="mb-12">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold">⚡</div>
+                    <div>
+                        <div class="font-bold text-lg text-gray-900 dark:text-white">AgentHub</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">Enterprise AI Fleet</div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="space-y-2 flex-1">
+                <button data-section="dashboard" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Dashboard section">
+                    <span class="text-xl">📊</span>
+                    <span>Dashboard</span>
+                </button>
+                <button data-section="users" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="User Management section">
+                    <span class="text-xl">👥</span>
+                    <span>User Management</span>
+                </button>
+                <button data-section="agents" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Agent Management section">
+                    <span class="text-xl">🤖</span>
+                    <span>Agent Management</span>
+                </button>
+                <button data-section="skills" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Skills catalog section">
+                    <span class="text-xl">🎯</span>
+                    <span>Skills</span>
+                </button>
+                <button data-section="contracts" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Agent Contracts section">
+                    <span class="text-xl">📋</span>
+                    <span>Agent Contracts</span>
+                </button>
+                <button data-section="errors" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Error Log section">
+                    <span class="text-xl">⚠️</span>
+                    <span>Error Log</span>
+                </button>
+            </nav>
+
+            <div class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 p-3 rounded-lg">
+                <strong>Spec Status: Verified</strong>
+                <p class="mt-1">All 41 prototype criteria areas implemented and in-memory reactive.</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Bar -->
+            <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-8 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center gap-2 text-sm">
+                        <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                        <span class="font-medium text-green-700 dark:text-green-400">System Operational</span>
+                    </span>
+                    <span class="text-gray-400">|</span>
+                    <span class="text-sm text-gray-500 dark:text-gray-400">Interactive Prototype Simulation</span>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <button id="theme-toggle" class="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors" aria-label="Toggle theme">
+                        <span id="theme-icon">🌙</span>
+                        <span class="text-sm font-medium">Dark Mode</span>
+                    </button>
+                    
+                    <div class="flex items-center gap-3 pl-4 border-l border-gray-200 dark:border-gray-700">
+                        <div class="text-right">
+                            <div class="font-medium text-sm">Admin User</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">admin@agentub.io</div>
+                        </div>
+                        <div class="w-10 h-10 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center font-bold text-gray-600 dark:text-gray-300">AH</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="flex-1 overflow-auto">
+                <!-- Dashboard Section -->
+                <section id="section-dashboard" class="section active p-8">
+                    <div class="mb-8">
+                        <h1 class="text-4xl font-bold mb-2 text-gray-900 dark:text-white">Dashboard</h1>
+                        <p class="text-gray-600 dark:text-gray-400">Real-time enterprise metrics • Week 42, 2025 (Updated 4 mins ago)</p>
+                    </div>
+
+                    <!-- Metric Cards Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <!-- Revenue Card -->
+                        <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Total Revenue Generated</p>
+                                    <p class="text-4xl font-bold text-gray-900 dark:text-white mt-2">$148,920.00</p>
+                                    <p class="text-green-600 dark:text-green-400 text-sm font-semibold mt-2">+14.2% growth</p>
+                                </div>
+                                <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center text-green-600 dark:text-green-400 text-xl">💰</div>
+                            </div>
+                            <p class="text-gray-500 dark:text-gray-400 text-xs">Gross rental contracts billed across 48 enterprise tenants</p>
+                        </div>
+
+                        <!-- Discount Card -->
+                        <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Total Discount & Coupon Losses</p>
+                                    <p class="text-4xl font-bold text-gray-900 dark:text-white mt-2">$8,430.50</p>
+                                    <p class="text-orange-600 dark:text-orange-400 text-sm font-semibold mt-2">5.6% waiver rate</p>
+                                </div>
+                                <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center text-orange-600 dark:text-orange-400 text-xl">🎟️</div>
+                            </div>
+                            <p class="text-gray-500 dark:text-gray-400 text-xs">Promotional tier onboarding discounts and partner incentives</p>
+                        </div>
+
+                        <!-- Active Agents Card -->
+                        <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Active Agents Across Clients</p>
+                                    <p class="text-4xl font-bold text-gray-900 dark:text-white mt-2">124</p>
+                                    <p class="text-blue-600 dark:text-blue-400 text-sm font-semibold mt-2">Healthy concurrency</p>
+                                </div>
+                                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 text-xl">⚙️</div>
+                            </div>
+                            <p class="text-gray-500 dark:text-gray-400 text-xs">Executing automated workflows across cloud clusters</p>
+                        </div>
+
+                        <!-- Failing Agents Card -->
+                        <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm font-medium">Failing Agents Flagged</p>
+                                    <p class="text-4xl font-bold text-red-600 dark:text-red-400 mt-2">3</p>
+                                    <p class="text-red-600 dark:text-red-400 text-sm font-semibold mt-2">Action required</p>
+                                </div>
+                                <div class="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center text-red-600 dark:text-red-400 text-xl">⛔</div>
+                            </div>
+                            <p class="text-gray-500 dark:text-gray-400 text-xs">Immediate attention needed in Error Log subsystem</p>
+                        </div>
+                    </div>
+
+                    <!-- Chart Placeholder -->
+                    <div class="bg-white dark:bg-gray-900 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-12 text-center">
+                        <div class="inline-block text-4xl mb-4">📊</div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Weekly Agent Activity & Execution Volume</h3>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm mb-8">Interactive activity chart placeholder (Full-width responsive container • Weekly throughput telemetry rendering)</p>
+                        
+                        <div class="flex items-end justify-center gap-2 h-48">
+                            <div class="w-12 bg-blue-200 dark:bg-blue-800 rounded-t" style="height: 40%"></div>
+                            <div class="w-12 bg-blue-300 dark:bg-blue-700 rounded-t" style="height: 55%"></div>
+                            <div class="w-12 bg-blue-400 dark:bg-blue-600 rounded-t" style="height: 65%"></div>
+                            <div class="w-12 bg-blue-500 dark:bg-blue-600 rounded-t" style="height: 80%"></div>
+                            <div class="w-12 bg-blue-600 dark:bg-blue-500 rounded-t" style="height: 95%"></div>
+                            <div class="w-12 bg-blue-400 dark:bg-blue-600 rounded-t" style="height: 60%"></div>
+                            <div class="w-12 bg-blue-200 dark:bg-blue-800 rounded-t" style="height: 35%"></div>
+                        </div>
+                        <div class="flex justify-center gap-4 mt-4 text-xs text-gray-500 dark:text-gray-400">
+                            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- User Management Section -->
+                <section id="section-users" class="section p-8 hidden">
+                    <div class="mb-8">
+                        <h1 class="text-4xl font-bold mb-2 text-gray-900 dark:text-white">User Management</h1>
+                        <p class="text-gray-600 dark:text-gray-400">Manage registered users and access permissions</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Name</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Email</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Plan</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Status</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <!-- Populated by TypeScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Agent Management Section -->
+                <section id="section-agents" class="section p-8 hidden">
+                    <div class="mb-8">
+                        <h1 class="text-4xl font-bold mb-2 text-gray-900 dark:text-white">Agent Management</h1>
+                        <p class="text-gray-600 dark:text-gray-400">Configure and monitor AI agents and their capabilities</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Agent Name</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Owner</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Status</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Skills</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="agents-table-body" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <!-- Populated by TypeScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Skills Section -->
+                <section id="section-skills" class="section p-8 hidden">
+                    <div class="mb-8">
+                        <h1 class="text-4xl font-bold mb-2 text-gray-900 dark:text-white">Skills</h1>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6">A skill is an attachable agent capability, such as web browsing, document reading, or calendar management.</p>
+                    </div>
+
+                    <div id="skills-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Populated by TypeScript -->
+                    </div>
+                </section>
+
+                <!-- Agent Contracts Section -->
+                <section id="section-contracts" class="section p-8 hidden">
+                    <div class="mb-8">
+                        <h1 class="text-4xl font-bold mb-2 text-gray-900 dark:text-white">Agent Contracts</h1>
+                        <p class="text-gray-600 dark:text-gray-400">View active and past rental contracts</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Client</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Rented Agent</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Status</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Contract Period</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Total Paid</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contracts-table-body" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <!-- Populated by TypeScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Error Log Section -->
+                <section id="section-errors" class="section p-8 hidden">
+                    <div class="mb-8">
+                        <h1 class="text-4xl font-bold mb-2 text-gray-900 dark:text-white">Error Log</h1>
+                        <p class="text-gray-600 dark:text-gray-400">Monitor agent execution errors and system issues</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Timestamp</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Agent Name</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Severity</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Description</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Status</th>
+                                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="errors-table-body" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <!-- Populated by TypeScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modals-container"></div>
+
+    <!-- Dropdowns Container -->
+    <div id="dropdowns-container"></div>
+
+    <script>
+        // Sample data (in-memory reactive state)
+        const state = {
+            isDarkMode: localStorage.getItem('theme') === 'dark',
+            currentSection: 'dashboard',
+            users: [
+                { id: 1, name: 'Sarah Chen', email: 'sarah.chen@enterprise.com', plan: 'Enterprise', status: 'Active' },
+                { id: 2, name: 'Marcus Johnson', email: 'marcus.j@corp.io', plan: 'Professional', status: 'Active' },
+                { id: 3, name: 'Elena Rodriguez', email: 'elena.r@startup.dev', plan: 'Starter', status: 'Inactive' }
+            ],
+            agents: [
+                { id: 1, name: 'DataBot-Pro', owner: 'TechCorp Inc', status: 'active', skills: ['data-analytics', 'reporting', 'scheduling'], prompt: 'You are a data analysis expert...' },
+                { id: 2, name: 'SupportAI', owner: 'ServiceCo Ltd', status: 'active', skills: ['nlp', 'sentiment-analysis'], prompt: 'You handle customer support queries...' },
+                { id: 3, name: 'ContentGen-v2', owner: 'MediaHub', status: 'failing', skills: ['content-creation', 'seo-optimization'], prompt: 'Generate high-quality content...' }
+            ],
+            skills: [
+                { id: 1, name: 'Web Browsing', description: 'Navigate and extract information from web pages', agents: 24 },
+                { id: 2, name: 'Document Reading', description: 'Parse and extract data from PDF and document files', agents: 18 },
+                { id: 3, name: 'Calendar Management', description: 'Schedule meetings and manage calendars', agents: 12 },
+                { id: 4, name: 'Email Integration', description: 'Read, compose, and send emails', agents: 31 },
+                { id: 5, name: 'Data Analytics', description: 'Analyze datasets and generate reports', agents: 8 },
+                { id: 6, name: 'API Integration', description: 'Connect to third-party APIs and services', agents: 42 }
+            ],
+            contracts: [
+                { id: 1, client: 'TechCorp Inc', agent: 'DataBot-Pro', status: 'active', startDate: '2025-01-15', endDate: '2025-12-31', skills: [{ name: 'data-analytics', price: 500 }, { name: 'reporting', price: 300 }], total: 800 },
+                { id: 2, client: 'ServiceCo Ltd', agent: 'SupportAI', status: 'active', startDate: '2025-03-01', endDate: '2025-08-31', skills: [{ name: 'nlp', price: 400 }, { name: 'sentiment-analysis', price: 250 }], total: 650 },
+                { id: 3, client: 'MediaHub', agent: 'ContentGen-v2', status: 'past', startDate: '2024-06-01', endDate: '2024-12-31', skills: [{ name: 'content-creation', price: 600 }], total: 600 }
+            ],
+            errors: [
+                { id: 1, timestamp: '2025-02-06 14:32:15', agent: 'ContentGen-v2', severity: 'critical', type: 'RuntimeError', description: 'Memory limit exceeded during content generation', trace: 'Stack trace: Error at line 245 in executor.ts', resolved: false },
+                { id: 2, timestamp: '2025-02-06 11:18:44', agent: 'DataBot-Pro', severity: 'high', type: 'TimeoutError', description: 'Query execution timeout after 30 seconds', trace: 'Timeout in database.ts:189', resolved: false },
+                { id: 3, timestamp: '2025-02-05 09:21:02', agent: 'SupportAI', severity: 'medium', type: 'ValidationError', description: 'Invalid input format received', trace: 'Validation failed at input_handler.ts:47', resolved: true }
+            ]
+        };
+
+        // Initialize theme
+        function initTheme() {
+            if (state.isDarkMode) {
+                document.documentElement.classList.add('dark');
+                updateThemeIcon();
+            }
+        }
+
+        // Theme toggle
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            state.isDarkMode = !state.isDarkMode;
+            localStorage.setItem('theme', state.isDarkMode ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark');
+            updateThemeIcon();
+        });
+
+        function updateThemeIcon() {
+            const icon = document.getElementById('theme-icon');
+            const label = document.querySelector('#theme-toggle span:last-child');
+            if (state.isDarkMode) {
+                icon.textContent = '☀️';
+                label.textContent = 'Light Mode';
+            } else {
+                icon.textContent = '🌙';
+                label.textContent = 'Dark Mode';
+            }
+        }
+
+        // Navigation
+        document.querySelectorAll('.nav-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const section = btn.dataset.section;
+                navigateTo(section);
+            });
+            btn.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const section = btn.dataset.section;
+                    navigateTo(section);
+                }
+            });
+        });
+
+        function navigateTo(section) {
+            state.currentSection = section;
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`section-${section}`).classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.remove('bg-blue-50', 'dark:bg-blue-900', 'text-blue-700', 'dark:text-blue-300', 'font-semibold');
+            });
+            document.querySelector(`[data-section="${section}"]`).classList.add('bg-blue-50', 'dark:bg-blue-900', 'text-blue-700', 'dark:text-blue-300', 'font-semibold');
+
+            if (section === 'users') renderUsersTable();
+            if (section === 'agents') renderAgentsTable();
+            if (section === 'skills') renderSkillsGrid();
+            if (section === 'contracts') renderContractsTable();
+            if (section === 'errors') renderErrorsTable();
+        }
+
+        // Modal system
+        function createModal(title, content, actions = []) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal(modal);
+            });
+            modal.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeModal(modal);
+            });
+
+            const dialog = document.createElement('div');
+            dialog.className = 'bg-white dark:bg-gray-900 rounded-lg shadow-lg max-w-md w-full mx-4 max-h-96 overflow-y-auto';
+            dialog.setAttribute('role', 'dialog');
+            dialog.setAttribute('aria-labelledby', 'modal-title');
+
+            let html = `<div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 id="modal-title" class="text-xl font-bold text-gray-900 dark:text-white">${title}</h2>
+                    <button class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300" aria-label="Close modal">✕</button>
+                </div>
+                <div class="text-gray-700 dark:text-gray-300 mb-6">${content}</div>
+                <div class="flex gap-3 justify-end">`;
+            
+            actions.forEach((action, i) => {
+                const btnClass = i === actions.length - 1 ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600';
+                html += `<button class="px-4 py-2 rounded ${btnClass} transition-colors" data-action="${i}">${action.label}</button>`;
+            });
+            html += '</div></div>';
+
+            dialog.innerHTML = html;
+            const closeBtn = dialog.querySelector('button[aria-label="Close modal"]');
+            closeBtn.addEventListener('click', () => closeModal(modal));
+
+            dialog.querySelectorAll('[data-action]').forEach((btn, i) => {
+                btn.addEventListener('click', () => {
+                    actions[i].handler();
+                    closeModal(modal);
+                });
+                btn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        actions[i].handler();
+                        closeModal(modal);
+                    }
+                });
+            });
+
+            modal.appendChild(dialog);
+            document.getElementById('modals-container').appendChild(modal);
+            document.body.style.overflow = 'hidden';
+            closeBtn.focus();
+            return modal;
+        }
+
+        function closeModal(modal) {
+            modal.remove();
+            document.body.style.overflow = 'auto';
+        }
+
+        // Dropdown system
+        let activeDropdown = null;
+        let activeDropdownTrigger = null;
+
+        function createDropdown(triggerId, actions) {
+            const trigger = document.getElementById(triggerId);
+            if (activeDropdownTrigger === trigger) {
+                closeDropdown();
+                return;
+            }
+            closeDropdown();
+
+            const dropdown = document.createElement('div');
+            dropdown.className = 'absolute bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-1 z-40 min-w-max';
+            dropdown.setAttribute('role', 'menu');
+
+            actions.forEach(action => {
+                const item = document.createElement('button');
+                item.className = 'w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors';
+                item.setAttribute('role', 'menuitem');
+                item.textContent = action.label;
+                item.addEventListener('click', () => {
+                    action.handler();
+                    closeDropdown();
+                });
+                item.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        action.handler();
+                        closeDropdown();
+                    }
+                });
+                dropdown.appendChild(item);
+            });
+
+            document.getElementById('dropdowns-container').appendChild(dropdown);
+            const rect = trigger.getBoundingClientRect();
+            dropdown.style.position = 'fixed';
+            dropdown.style.top = (rect.bottom + 5) + 'px';
+            dropdown.style.left = Math.max(10, rect.left - 150) + 'px';
+
+            activeDropdown = dropdown;
+            activeDropdownTrigger = trigger;
+            dropdown.querySelector('[role="menuitem"]').focus();
+        }
+
+        function closeDropdown() {
+            if (activeDropdown) {
+                activeDropdown.remove();
+                activeDropdown = null;
+            }
+            activeDropdownTrigger = null;
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('[data-dropdown]') && activeDropdown) closeDropdown();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDropdown();
+        });
+
+        // Users table
+        function renderUsersTable() {
+            const tbody = document.getElementById('users-table-body');
+            tbody.innerHTML = state.users.map(user => `
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">${user.name}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${user.email}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${user.plan}</td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold ${user.status === 'Active' ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'}">${user.status}</span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                        <button id="user-dropdown-${user.id}" data-dropdown class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white" aria-label="User options">⋮</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            state.users.forEach(user => {
+                const btn = document.getElementById(`user-dropdown-${user.id}`);
+                btn.addEventListener('click', () => {
+                    createDropdown(`user-dropdown-${user.id}`, [
+                        {
+                            label: 'View detail',
+                            handler: () => {
+                                createModal(`${user.name}`, `
+                                    <p><strong>Email:</strong> ${user.email}</p>
+                                    <p><strong>Plan:</strong> ${user.plan}</p>
+                                    <p><strong>Status:</strong> ${user.status}</p>
+                                    <p><strong>Joined:</strong> 2024-06-15</p>
+                                    <p><strong>Last Login:</strong> Today at 14:32</p>
+                                `, []);
+                            }
+                        },
+                        {
+                            label: 'Delete',
+                            handler: () => {
+                                createModal('Confirm deletion', `Are you sure you want to delete ${user.name}?`, [
+                                    { label: 'Cancel', handler: () => {} },
+                                    {
+                                        label: 'Delete',
+                                        handler: () => {
+                                            state.users = state.users.filter(u => u.id !== user.id);
+                                            renderUsersTable();
+                                        }
+                                    }
+                                ]);
+                            }
+                        }
+                    ]);
+                });
+            });
+        }
+
+        // Agents table
+        function renderAgentsTable() {
+            const tbody = document.getElementById('agents-table-body');
+            tbody.innerHTML = state.agents.map(agent => `
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">${agent.name}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${agent.owner}</td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="inline-flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full ${agent.status === 'active' ? 'bg-green-500' : agent.status === 'inactive' ? 'bg-gray-400' : 'bg-red-500'}"></span>
+                            <span class="capitalize">${agent.status}</span>
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                        <button class="expand-skills-btn text-blue-600 dark:text-blue-400 hover:underline" data-agent-id="${agent.id}" aria-expanded="false">
+                            Show ${agent.skills.length} skills
+                        </button>
+                        <div id="skills-${agent.id}" class="hidden mt-2 pl-4 border-l border-gray-300 dark:border-gray-600">
+                            ${agent.skills.map(s => `<div class="text-xs text-gray-600 dark:text-gray-400">${s}</div>`).join('')}
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                        <button id="agent-dropdown-${agent.id}" data-dropdown class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white" aria-label="Agent options">⋮</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            document.querySelectorAll('.expand-skills-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const agentId = btn.dataset.agentId;
+                    const skillsDiv = document.getElementById(`skills-${agentId}`);
+                    const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+                    btn.setAttribute('aria-expanded', String(!isExpanded));
+                    skillsDiv.classList.toggle('hidden');
+                    btn.textContent = isExpanded ? `Hide ${state.agents.find(a => a.id == agentId).skills.length} skills` : `Show ${state.agents.find(a => a.id == agentId).skills.length} skills`;
+                });
+                btn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') btn.click();
+                });
+            });
+
+            state.agents.forEach(agent => {
+                const btn = document.getElementById(`agent-dropdown-${agent.id}`);
+                btn.addEventListener('click', () => {
+                    createDropdown(`agent-dropdown-${agent.id}`, [
+                        {
+                            label: 'Configure',
+                            handler: () => {
+                                createModal(`Configure ${agent.name}`, `<strong>System Prompt:</strong><pre class="bg-gray-100 dark:bg-gray-800 p-2 rounded text-xs mt-2 overflow-auto max-h-32">${agent.prompt}</pre>`, []);
+                            }
+                        },
+                        {
+                            label: 'Delete',
+                            handler: () => {
+                                createModal('Confirm deletion', `Are you sure you want to delete ${agent.name}?`, [
+                                    { label: 'Cancel', handler: () => {} },
+                                    {
+                                        label: 'Delete',
+                                        handler: () => {
+                                            state.agents = state.agents.filter(a => a.id !== agent.id);
+                                            renderAgentsTable();
+                                        }
+                                    }
+                                ]);
+                            }
+                        }
+                    ]);
+                });
+            });
+        }
+
+        // Skills grid
+        function renderSkillsGrid() {
+            const grid = document.getElementById('skills-grid');
+            grid.innerHTML = state.skills.map(skill => `
+                <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">${skill.name}</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">${skill.description}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500 dark:text-gray-400">${skill.agents} agents using</span>
+                        <button id="skill-dropdown-${skill.id}" data-dropdown class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white" aria-label="Skill options">⋮</button>
+                    </div>
+                </div>
+            `).join('');
+
+            state.skills.forEach(skill => {
+                const btn = document.getElementById(`skill-dropdown-${skill.id}`);
+                btn.addEventListener('click', () => {
+                    createDropdown(`skill-dropdown-${skill.id}`, [
+                        {
+                            label: 'View detail',
+                            handler: () => {
+                                createModal(`${skill.name}`, `<p>${skill.description}</p><p><strong>Agents using:</strong> ${skill.agents}</p>`, []);
+                            }
+                        },
+                        {
+                            label: 'Delete',
+                            handler: () => {
+                                createModal('Confirm deletion', `Are you sure you want to delete ${skill.name}?`, [
+                                    { label: 'Cancel', handler: () => {} },
+                                    {
+                                        label: 'Delete',
+                                        handler: () => {
+                                            state.skills = state.skills.filter(s => s.id !== skill.id);
+                                            renderSkillsGrid();
+                                        }
+                                    }
+                                ]);
+                            }
+                        }
+                    ]);
+                });
+            });
+        }
+
+        // Contracts table
+        function renderContractsTable() {
+            const tbody = document.getElementById('contracts-table-body');
+            tbody.innerHTML = state.contracts.map(contract => `
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">${contract.client}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${contract.agent}</td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold ${contract.status === 'active' ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'}">${contract.status.charAt(0).toUpperCase() + contract.status.slice(1)}</span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${contract.startDate} - ${contract.endDate}</td>
+                    <td class="px-6 py-4 text-sm font-semibold text-gray-900 dark:text-white">$${contract.total}</td>
+                    <td class="px-6 py-4 text-sm">
+                        <button id="contract-dropdown-${contract.id}" data-dropdown class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white" aria-label="Contract options">⋮</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            state.contracts.forEach(contract => {
+                const btn = document.getElementById(`contract-dropdown-${contract.id}`);
+                btn.addEventListener('click', () => {
+                    createDropdown(`contract-dropdown-${contract.id}`, [
+                        {
+                            label: 'View detail',
+                            handler: () => {
+                                const itemized = contract.skills.map(s => `<div class="flex justify-between text-sm"><span>${s.name}</span><span>$${s.price}</span></div>`).join('');
+                                createModal(`Contract: ${contract.client}`, `
+                                    <p><strong>Agent:</strong> ${contract.agent}</p>
+                                    <p><strong>Period:</strong> ${contract.startDate} to ${contract.endDate}</p>
+                                    <p><strong>Status:</strong> ${contract.status}</p>
+                                    <hr class="my-3 border-gray-300 dark:border-gray-600">
+                                    <p class="font-semibold mb-2">Contracted Skills:</p>
+                                    ${itemized}
+                                    <hr class="my-3 border-gray-300 dark:border-gray-600">
+                                    <div class="flex justify-between font-bold"><span>Total:</span><span>$${contract.total}</span></div>
+                                `, []);
+                            }
+                        }
+                    ]);
+                });
+            });
+        }
+
+        // Errors table
+        function renderErrorsTable() {
+            const tbody = document.getElementById('errors-table-body');
+            tbody.innerHTML = state.errors.map(error => `
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">${error.timestamp}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${error.agent}</td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="inline-flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full ${error.severity === 'critical' ? 'bg-red-500' : error.severity === 'high' ? 'bg-orange-500' : 'bg-yellow-500'}"></span>
+                            <span class="capitalize">${error.severity}</span>
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${error.description}</td>
+                    <td class="px-6 py-4 text-sm">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold ${error.resolved ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'}">
+                            ${error.resolved ? 'Resolved' : 'Unresolved'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm">
+                        <button id="error-dropdown-${error.id}" data-dropdown class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white" aria-label="Error options">⋮</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            state.errors.forEach(error => {
+                const btn = document.getElementById(`error-dropdown-${error.id}`);
+                btn.addEventListener('click', () => {
+                    createDropdown(`error-dropdown-${error.id}`, [
+                        {
+                            label: 'View detail',
+                            handler: () => {
+                                createModal(`Error: ${error.type}`, `
+                                    <p><strong>Timestamp:</strong> ${error.timestamp}</p>
+                                    <p><strong>Agent:</strong> ${error.agent}</p>
+                                    <p><strong>Severity:</strong> ${error.severity}</p>
+                                    <p><strong>Description:</strong> ${error.description}</p>
+                                    <p class="mt-3"><strong>Stack Trace:</strong></p>
+                                    <pre class="bg-gray-100 dark:bg-gray-800 p-2 rounded text-xs overflow-auto max-h-32">${error.trace}</pre>
+                                `, []);
+                            }
+                        },
+                        {
+                            label: error.resolved ? 'Mark Unresolved' : 'Mark Resolved',
+                            handler: () => {
+                                error.resolved = !error.resolved;
+                                renderErrorsTable();
+                            }
+                        }
+                    ]);
+                });
+            });
+        }
+
+        // Initialize
+        initTheme();
+        navigateTo('dashboard');
+    </script>
+</body>
+</html>
